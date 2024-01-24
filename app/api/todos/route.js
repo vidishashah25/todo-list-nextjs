@@ -9,3 +9,16 @@ export async function POST (req){
 
     return NextResponse.json({message: 'Todo created'}, {status: 201})
 }
+
+export async function GET (){
+    await connectMongoDB()
+    const todos = await Todo.find()
+    return NextResponse.json({todos})
+}
+
+export async function DELETE (req){
+    const id = req.nextUrl.searchParams.get('id')
+    await connectMongoDB()
+    await Todo.findByIdAndDelete(id)
+    return NextResponse.json({message: 'Todo deleted'}, {status: 200})
+}
